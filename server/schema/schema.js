@@ -6,7 +6,8 @@ const {
   GraphQLID,
   GraphQLSchema,
   GraphQLInt,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = graphql;
 
 // dummy data
@@ -84,6 +85,47 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve(parent, args) {
+        const newAuthor = {
+          name: args.name,
+          age: args.age,
+          id: Math.floor(10000 * Math.random())
+        };
+        authors.push(newAuthor);
+        return newAuthor;
+      }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        authorId: { type: new GraphQLNonNull(GraphQLID) }
+      },
+      resolve(parent, args) {
+        const newBook = {
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId,
+          id: Math.floor(10000 * Math.random())
+        };
+        books.push(newBook);
+        return newBook;
+      }
+    }
+  }
+});
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
