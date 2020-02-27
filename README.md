@@ -1,6 +1,6 @@
 ## Introduction
 
-This repo is able to show how graphQL works in both server and client side.
+This repo is able to demo how graphQL works in both server and client side.
 
 ## Installation:
 
@@ -9,5 +9,11 @@ This repo is able to show how graphQL works in both server and client side.
 
 ## Usage:
 
-1. launch server:
+1. launch backend Node server:
    `npm run server`
+
+2. launch client:
+   `npm run start`
+
+3. build bundled JS file from React source code:
+   `npm run build`
