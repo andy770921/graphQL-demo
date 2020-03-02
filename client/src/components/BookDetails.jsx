@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { GET_BOOK_QUERY } from '../queries/queries';
 
 function BookDetails({ booksList }) {
   const [selectedBookId, setSelectedBookId] = useState(null);
-  const [getBookQuery, { called, loading, data: bookQueryData }] = useLazyQuery(GET_BOOK_QUERY, {
+  const [getBookQuery, { error, data: bookQueryData }] = useLazyQuery(GET_BOOK_QUERY, {
     variables: { id: selectedBookId }
   });
   const handleChange = e => {
     setSelectedBookId(e.target.value);
     getBookQuery();
   };
+  if (error) return <p>Error :(</p>;
   return (
     <div>
       <h2> Select Book for Details: </h2>
@@ -23,7 +24,7 @@ function BookDetails({ booksList }) {
         ))}
       </select>
       <div id="book-details">
-        {called && !loading ? (
+        {bookQueryData ? (
           <>
             <p>Book Name: {bookQueryData.book.name}</p>
             <p>Book Genre: {bookQueryData.book.genre}</p>
