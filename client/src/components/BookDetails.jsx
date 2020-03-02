@@ -4,6 +4,7 @@ import { GET_BOOK_QUERY } from '../queries/queries';
 
 function BookDetails({ booksList }) {
   const [selectedBookId, setSelectedBookId] = useState(null);
+  const [bookData, setBookData] = useState(null);
   const [getBookQuery, { error, data: bookQueryData }] = useLazyQuery(GET_BOOK_QUERY, {
     variables: { id: selectedBookId }
   });
@@ -11,6 +12,19 @@ function BookDetails({ booksList }) {
     setSelectedBookId(e.target.value);
     getBookQuery();
   };
+  useEffect(() => {
+    if (bookQueryData) {
+      setBookData({
+        name: bookQueryData.book.name,
+        genre: bookQueryData.book.genre,
+        author: bookQueryData.book.author.name,
+        authorAge: bookQueryData.book.author.age,
+        otherBooks: bookQueryData.book.author.books.filter(
+          book => book.id !== bookQueryData.book.id
+        )
+      });
+    }
+  }, [bookQueryData]);
   if (error) return <p>Error :(</p>;
   return (
     <div>
@@ -24,19 +38,17 @@ function BookDetails({ booksList }) {
         ))}
       </select>
       <div id="book-details">
-        {bookQueryData ? (
+        {bookData ? (
           <>
-            <p>Book Name: {bookQueryData.book.name}</p>
-            <p>Book Genre: {bookQueryData.book.genre}</p>
-            <p>Book Author: {bookQueryData.book.author.name}</p>
-            <p>Book Author's age: {bookQueryData.book.author.age}</p>
+            <p>Book Name: {bookData.name}</p>
+            <p>Book Genre: {bookData.genre}</p>
+            <p>Book Author: {bookData.author}</p>
+            <p>Book Author's age: {bookData.authorAge}</p>
             <p>Other Books from the Same Author:</p>
             <ul>
-              {bookQueryData.book.author.books
-                .filter(book => book.id !== bookQueryData.book.id)
-                .map(book => (
-                  <li key={book.id}>{book.name}</li>
-                ))}
+              {bookData.otherBooks.map(book => (
+                <li key={book.id}>{book.name}</li>
+              ))}
             </ul>
           </>
         ) : null}
