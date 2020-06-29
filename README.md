@@ -23,3 +23,13 @@ This repo was made for demoing how graphQL works in both server and client side.
 
 5. build client bundled JS from source code:
    `npm run build`
+
+## Tutorial:
+
+See the tutorial in (91APP YouTube Channel)[https://youtu.be/0Bb2btvd6Ns]
+
+## Q&A:
+
+1. (Part 1)[https://www.facebook.com/91apptech/posts/137966881234116]
+
+2. (Part 2)[https://www.facebook.com/91apptech/posts/137967567900714]
